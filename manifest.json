@@ -1,7 +1,7 @@
 {
   "name": "彩票分析器",
   "short_name": "彩票分析",
-  "description": "大乐透+排列五历史号码统计分析与预测 - 仅供学习娱乐",
+  "description": "大乐透+双色球+排列五历史号码统计分析与预测 - 仅供学习娱乐",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
