@@ -1,0 +1,18 @@
+{
+  "name": "大乐透分析器",
+  "short_name": "大乐透分析",
+  "description": "大乐透历史号码统计分析与预测 - 仅供学习娱乐",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#e74c3c",
+  "theme_color": "#e74c3c",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
