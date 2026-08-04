@@ -9,37 +9,41 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
-<title>大乐透分析器</title>
+<title>彩票分析器</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--red:#e74c3c;--red-dark:#c0392b;--blue:#3498db;--gold:#f39c12;--green:#27ae60;--bg:#f0f2f5;--card:#fff;--text:#2c3e50;--text-light:#7f8c8d;--border:#ecf0f1}
+:root{--red:#e74c3c;--red-dark:#c0392b;--blue:#3498db;--gold:#f39c12;--green:#27ae60;--purple:#8e44ad;--bg:#f0f2f5;--card:#fff;--text:#2c3e50;--text-light:#7f8c8d;--border:#ecf0f1}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:80px}
 
-/* Header */
-.header{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;padding:20px 16px 16px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
-.header h1{font-size:22px;font-weight:700;margin-bottom:4px}
-.header .latest{font-size:12px;opacity:.85;margin-top:6px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
-.header .latest .ball{display:inline-block;width:28px;height:28px;line-height:28px;border-radius:50%;font-size:13px;font-weight:700;text-align:center}
-.header .latest .bf{background:#fff;color:#e74c3c}
-.header .latest .bb{background:#fff;color:#3498db}
+.header{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;padding:20px 16px 14px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15);transition:background .3s}
+.header.pl5{background:linear-gradient(135deg,#8e44ad,#6c3483)}
+.header h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.latest{font-size:12px;opacity:.9;margin-top:6px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;align-items:center}
+.latest .ball{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:13px;font-weight:700;color:#fff}
+.bf{background:rgba(255,255,255,.25)}
+.bb{background:rgba(255,255,255,.25)}
+.latest .sep{color:rgba(255,255,255,.5);font-size:16px}
 
-/* Tabs */
+.mode-switch{display:flex;gap:0;margin-bottom:10px;border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.3)}
+.mode-btn{flex:1;padding:8px 0;font-size:13px;font-weight:600;background:rgba(255,255,255,.15);color:#fff;border:none;cursor:pointer;transition:all .2s}
+.mode-btn.active{background:rgba(255,255,255,.95);color:var(--red-dark)}
+.header.pl5 .mode-btn.active{color:#6c3483}
+
 .tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:99}
 .tab{flex:1;padding:14px 0;text-align:center;font-size:14px;font-weight:600;color:var(--text-light);border-bottom:3px solid transparent;cursor:pointer;transition:all .2s}
 .tab.active{color:var(--red);border-bottom-color:var(--red)}
+.header.pl5 ~ .tabs .tab.active{color:var(--purple);border-bottom-color:var(--purple)}
 
-/* Content */
 .content{padding:12px}
 .tab-content{display:none}
 .tab-content.active{display:block;animation:fadeIn .3s}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* Cards */
 .card{background:var(--card);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
 .card h2{font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px;padding-left:10px;border-left:3px solid var(--red)}
+.card.pl5 h2{border-left-color:var(--purple)}
 .card h3{font-size:14px;font-weight:600;color:var(--text-light);margin:12px 0 8px}
 
-/* Stats grid */
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .stat-box{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:10px;padding:12px;text-align:center}
 .stat-box .label{font-size:11px;opacity:.85}
@@ -48,15 +52,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .stat-box.blue{background:linear-gradient(135deg,#3498db,#2980b9)}
 .stat-box.green{background:linear-gradient(135deg,#27ae60,#229954)}
 .stat-box.gold{background:linear-gradient(135deg,#f39c12,#e67e22)}
+.stat-box.purple{background:linear-gradient(135deg,#8e44ad,#9b59b6)}
 
-/* Ball display */
 .balls{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 .ball{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;font-size:15px;font-weight:700;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,.15)}
 .ball-front{background:linear-gradient(135deg,#e74c3c,#c0392b)}
 .ball-back{background:linear-gradient(135deg,#3498db,#2980b9)}
-.ball-sm{width:30px;height:30px;font-size:12px}
+.ball-pl5{background:linear-gradient(135deg,#8e44ad,#6c3483)}
+.ball-sm{width:26px;height:26px;font-size:11px}
 
-/* Bar chart */
 .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:12px}
 .bar-label{width:28px;text-align:center;font-weight:700;color:var(--text)}
 .bar-track{flex:1;height:18px;background:#f5f5f5;border-radius:9px;overflow:hidden}
@@ -64,530 +68,361 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .bar-fill.hot{background:linear-gradient(90deg,#e74c3c,#ff6b6b)}
 .bar-fill.warm{background:linear-gradient(90deg,#f39c12,#ffc107)}
 .bar-fill.cold{background:linear-gradient(90deg,#3498db,#5dade2)}
+.bar-fill.purple{background:linear-gradient(90deg,#8e44ad,#bb8fce)}
 .bar-count{width:40px;text-align:right;color:var(--text-light)}
 
-/* Prediction cards */
 .pred-card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,.06);border:2px solid transparent;transition:border-color .2s}
 .pred-card .pred-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .pred-card .strategy{background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.pred-card .strategy.dlt{background:linear-gradient(135deg,#e74c3c,#c0392b)}
 .pred-card .group-num{font-size:13px;color:var(--text-light);font-weight:600}
-.pred-balls{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
+.pred-balls{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;align-items:center}
+.pred-sum{font-size:12px;color:var(--text-light);margin-top:6px;text-align:center}
 
-/* History table */
 .hist-table{width:100%;border-collapse:collapse;font-size:12px}
 .hist-table th{background:var(--red);color:#fff;padding:8px 4px;text-align:center;position:sticky;top:0}
+.hist-table.pl5 th{background:var(--purple)}
 .hist-table td{padding:8px 4px;text-align:center;border-bottom:1px solid var(--border)}
 .hist-table tr:nth-child(even){background:#fafafa}
 
-/* Hot/Cold chips */
 .chip-row{display:flex;flex-wrap:wrap;gap:6px}
 .chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:16px;font-size:12px;font-weight:600}
 .chip.hot{background:#fff5f5;color:#e74c3c;border:1px solid #fab1a0}
 .chip.cold{background:#f0f7ff;color:#3498db;border:1px solid #74b9ff}
 
-/* Disclaimer */
 .disclaimer{background:#fff3cd;border:1px solid #ffeaa7;border-radius:10px;padding:12px;margin:12px 0;color:#856404;font-size:12px;line-height:1.5}
 
-/* Refresh button */
 .refresh-btn{display:block;width:100%;padding:12px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
+.refresh-btn.pl5{background:linear-gradient(135deg,#8e44ad,#6c3483)}
 .refresh-btn:active{transform:scale(.98)}
 
-/* Loading */
-.loading{display:flex;justify-content:center;align-items:center;height:200px;flex-direction:column;gap:12px}
-.spinner{width:36px;height:36px;border:3px solid #f0f0f0;border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+.pos-section{margin-bottom:14px}
+.pos-title{font-size:13px;font-weight:700;color:var(--purple);padding:6px 10px;background:#f5eef7;border-radius:8px;margin-bottom:6px}
 
-/* Miss table */
-.miss-table{width:100%;border-collapse:collapse;font-size:12px}
-.miss-table th{background:var(--red);color:#fff;padding:6px;text-align:center}
-.miss-table td{padding:6px;text-align:center;border-bottom:1px solid var(--border)}
-.miss-high{color:#e74c3c;font-weight:700}
-.miss-mid{color:#f39c12;font-weight:600}
-.miss-low{color:#27ae60}
-
-/* Bottom nav space */
 .bottom-space{height:10px}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>🔴 大乐透分析器</h1>
+<div class="header" id="appHeader">
+  <div class="mode-switch">
+    <button class="mode-btn active" onclick="switchMode('dlt')">🔴 大乐透</button>
+    <button class="mode-btn" onclick="switchMode('pl5')">🟣 排列五</button>
+  </div>
+  <h1 id="appTitle">大乐透分析器</h1>
   <div class="latest" id="latestDraw"></div>
 </div>
 
-<div class="tabs">
+<div class="tabs" id="tabsBar">
   <div class="tab active" data-tab="overview">概览</div>
   <div class="tab" data-tab="frequency">频率</div>
   <div class="tab" data-tab="predict">预测</div>
   <div class="tab" data-tab="history">历史</div>
 </div>
 
-<div class="content">
-
-  <!-- 概览 -->
-  <div class="tab-content active" id="tab-overview">
-    <div class="card">
-      <h2>📊 基础统计</h2>
-      <div class="stats-grid" id="overviewStats"></div>
-    </div>
-    <div class="card">
-      <h2>🔥 冷热号码</h2>
-      <h3>前区热号 Top10</h3>
-      <div class="chip-row" id="hotFront"></div>
-      <h3>前区冷号 Top10</h3>
-      <div class="chip-row" id="coldFront"></div>
-      <h3>后区热号 Top5</h3>
-      <div class="chip-row" id="hotBack"></div>
-      <h3>后区冷号 Top5</h3>
-      <div class="chip-row" id="coldBack"></div>
-    </div>
-    <div class="card">
-      <h2>📈 奇偶与大小（最近30期）</h2>
-      <h3>奇偶比分布</h3>
-      <div id="parityDist"></div>
-      <h3>大小比分布（以18为界）</h3>
-      <div id="bigSmallDist"></div>
-    </div>
-    <div class="card">
-      <h2>🔗 连号统计</h2>
-      <div id="consecStats"></div>
-    </div>
-  </div>
-
-  <!-- 频率 -->
-  <div class="tab-content" id="tab-frequency">
-    <div class="card">
-      <h2>前区号码频率（01-35）</h2>
-      <div id="frontFreq"></div>
-    </div>
-    <div class="card">
-      <h2>后区号码频率（01-12）</h2>
-      <div id="backFreq"></div>
-    </div>
-    <div class="card">
-      <h2>前区遗漏值</h2>
-      <p style="font-size:12px;color:#7f8c8d;margin-bottom:8px">遗漏期数越多，号码越"冷"</p>
-      <div id="frontMiss"></div>
-    </div>
-    <div class="card">
-      <h2>后区遗漏值</h2>
-      <div id="backMiss"></div>
-    </div>
-  </div>
-
-  <!-- 预测 -->
-  <div class="tab-content" id="tab-predict">
-    <div class="disclaimer">
-      ⚠️ 彩票开奖是完全随机的独立事件，历史数据无法预测未来。以下号码仅供娱乐参考，请理性购彩。
-    </div>
-    <div id="predictions"></div>
-    <button class="refresh-btn" onclick="generatePredictions()">🔄 重新生成预测</button>
-  </div>
-
-  <!-- 历史 -->
-  <div class="tab-content" id="tab-history">
-    <div class="card" style="padding:8px">
-      <h2 style="padding:8px 8px 8px 12px">📜 历史开奖（最近50期）</h2>
-      <div style="overflow-x:auto">
-        <table class="hist-table">
-          <thead><tr><th>期号</th><th>前区</th><th>后区</th><th>和值</th></tr></thead>
-          <tbody id="historyTable"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="disclaimer">
-    ⚠️ 免责声明：彩票开奖是完全随机的独立事件，任何预测方法都无法提高中奖概率。本应用仅供统计分析学习之用，不构成投注建议。请理性购彩，量力而行。
-  </div>
-
+<div class="content" id="appContent">
+  <div class="tab-content active" id="tab-overview"></div>
+  <div class="tab-content" id="tab-frequency"></div>
+  <div class="tab-content" id="tab-predict"></div>
+  <div class="tab-content" id="tab-history"></div>
+  <div class="disclaimer">⚠️ 免责声明：彩票开奖是完全随机的独立事件，任何预测方法都无法提高中奖概率。本应用仅供统计分析学习之用，不构成投注建议。请理性购彩，量力而行。</div>
   <div class="bottom-space"></div>
 </div>
 
 <script>
 // ============================================================
-// 大乐透分析引擎 (JavaScript)
+// 通用工具
 // ============================================================
+let MODE = 'dlt';
+let DLT_DATA = [];
+let PL5_DATA = [];
 
-let HISTORY = [];
-let ANALYZER = null;
+function pad2(n) { return String(n).padStart(2, '0'); }
 
-// ---- 分析器 ----
-class DaletouAnalyzer {
+function fetchJSON(url) {
+  return fetch(url).then(r => r.json());
+}
+
+// ============================================================
+// 大乐透分析器
+// ============================================================
+class DLTAnalyzer {
   constructor(history) {
     this.history = history;
     this.frontFreq = {};
     this.backFreq = {};
     for (let n = 1; n <= 35; n++) this.frontFreq[n] = 0;
     for (let n = 1; n <= 12; n++) this.backFreq[n] = 0;
-    this._computeFreq();
-  }
-
-  _computeFreq() {
-    for (const r of this.history) {
+    for (const r of history) {
       for (const n of r.front) this.frontFreq[n]++;
       for (const n of r.back) this.backFreq[n]++;
     }
   }
-
-  hotColdFront(n = 10) {
-    const arr = Array.from({length: 35}, (_, i) => [i + 1, this.frontFreq[i + 1]]);
-    arr.sort((a, b) => b[1] - a[1]);
-    return [arr.slice(0, n), arr.slice(-n).reverse()];
-  }
-
-  hotColdBack(n = 5) {
-    const arr = Array.from({length: 12}, (_, i) => [i + 1, this.backFreq[i + 1]]);
-    arr.sort((a, b) => b[1] - a[1]);
-    return [arr.slice(0, n), arr.slice(-n).reverse()];
-  }
-
-  missingFront() {
-    const miss = {};
-    for (let n = 1; n <= 35; n++) miss[n] = -1;
-    for (let i = 0; i < this.history.length; i++) {
-      for (const n of this.history[i].front) {
-        if (miss[n] === -1) miss[n] = i;
-      }
-    }
-    for (let n = 1; n <= 35; n++) {
-      if (miss[n] === -1) miss[n] = this.history.length;
-    }
-    return miss;
-  }
-
-  missingBack() {
-    const miss = {};
-    for (let n = 1; n <= 12; n++) miss[n] = -1;
-    for (let i = 0; i < this.history.length; i++) {
-      for (const n of this.history[i].back) {
-        if (miss[n] === -1) miss[n] = i;
-      }
-    }
-    for (let n = 1; n <= 12; n++) {
-      if (miss[n] === -1) miss[n] = this.history.length;
-    }
-    return miss;
-  }
-
-  parityRatio(nums) {
-    let odd = 0;
-    for (const n of nums) if (n % 2 === 1) odd++;
-    return `${odd}:${nums.length - odd}`;
-  }
-
-  bigSmallRatio(nums, t = 18) {
-    let big = 0;
-    for (const n of nums) if (n > t) big++;
-    return `${big}:${nums.length - big}`;
-  }
-
-  recentParity(n = 30) {
-    const stats = {};
-    for (const r of this.history.slice(0, n)) {
-      const k = this.parityRatio(r.front);
-      stats[k] = (stats[k] || 0) + 1;
-    }
-    return Object.entries(stats).sort((a, b) => b[1] - a[1]);
-  }
-
-  recentBigSmall(n = 30) {
-    const stats = {};
-    for (const r of this.history.slice(0, n)) {
-      const k = this.bigSmallRatio(r.front);
-      stats[k] = (stats[k] || 0) + 1;
-    }
-    return Object.entries(stats).sort((a, b) => b[1] - a[1]);
-  }
-
-  frontSumStats() {
-    const sums = this.history.map(r => r.front.reduce((a, b) => a + b, 0));
-    return {
-      min: Math.min(...sums),
-      max: Math.max(...sums),
-      avg: Math.round(sums.reduce((a, b) => a + b, 0) / sums.length),
-      recentAvg: Math.round(sums.slice(0, 20).reduce((a, b) => a + b, 0) / Math.min(20, sums.length))
-    };
-  }
-
-  consecutiveStats() {
-    let count = 0;
-    for (const r of this.history) {
-      const f = [...r.front].sort((a, b) => a - b);
-      for (let i = 0; i < f.length - 1; i++) {
-        if (f[i + 1] - f[i] === 1) { count++; break; }
-      }
-    }
-    return { count, total: this.history.length, ratio: (count / this.history.length * 100).toFixed(1) };
-  }
+  hotColdFront(n=10){const a=Array.from({length:35},(_,i)=>[i+1,this.frontFreq[i+1]]).sort((a,b)=>b[1]-a[1]);return[a.slice(0,n),a.slice(-n).reverse()]}
+  hotColdBack(n=5){const a=Array.from({length:12},(_,i)=>[i+1,this.backFreq[i+1]]).sort((a,b)=>b[1]-a[1]);return[a.slice(0,n),a.slice(-n).reverse()]}
+  missingFront(){const m={};for(let n=1;n<=35;n++)m[n]=-1;for(let i=0;i<this.history.length;i++)for(const n of this.history[i].front)if(m[n]===-1)m[n]=i;for(let n=1;n<=35;n++)if(m[n]===-1)m[n]=this.history.length;return m}
+  missingBack(){const m={};for(let n=1;n<=12;n++)m[n]=-1;for(let i=0;i<this.history.length;i++)for(const n of this.history[i].back)if(m[n]===-1)m[n]=i;for(let n=1;n<=12;n++)if(m[n]===-1)m[n]=this.history.length;return m}
+  parityRatio(nums){let o=0;for(const n of nums)if(n%2===1)o++;return o+':'+(nums.length-o)}
+  recentParity(n=30){const s={};for(const r of this.history.slice(0,n)){const k=this.parityRatio(r.front);s[k]=(s[k]||0)+1}return Object.entries(s).sort((a,b)=>b[1]-a[1])}
+  recentBigSmall(n=30){const s={};for(const r of this.history.slice(0,n)){let b=0;for(const n of r.front)if(n>18)b++;const k=b+':'+(5-b);s[k]=(s[k]||0)+1}return Object.entries(s).sort((a,b)=>b[1]-a[1])}
+  frontSumStats(){const s=this.history.map(r=>r.front.reduce((a,b)=>a+b,0));return{min:Math.min(...s),max:Math.max(...s),avg:Math.round(s.reduce((a,b)=>a+b,0)/s.length),recentAvg:Math.round(s.slice(0,20).reduce((a,b)=>a+b,0)/Math.min(20,s.length))}}
+  consecutiveStats(){let c=0;for(const r of this.history){const f=[...r.front].sort((a,b)=>a-b);for(let i=0;i<f.length-1;i++)if(f[i+1]-f[i]===1){c++;break}}return{count:c,total:this.history.length,ratio:(c/this.history.length*100).toFixed(1)}}
 }
 
-// ---- 预测器 ----
-class DaletouPredictor {
-  constructor(analyzer) {
-    this.an = analyzer;
-  }
-
-  _weightedPick(freq, min, max, count) {
-    const nums = Array.from({length: max - min + 1}, (_, i) => i + min);
-    const weights = nums.map(n => (freq[n] || 0) + 1);
-    const picked = [];
-    for (let i = 0; i < count; i++) {
-      const total = weights.reduce((a, b) => a + b, 0);
-      let r = Math.random() * total;
-      let idx = 0;
-      for (let j = 0; j < nums.length; j++) {
-        r -= weights[j];
-        if (r <= 0) { idx = j; break; }
-      }
-      picked.push(nums[idx]);
-      nums.splice(idx, 1);
-      weights.splice(idx, 1);
-    }
-    return picked.sort((a, b) => a - b);
-  }
-
-  predictHot() {
-    const [hotF] = this.an.hotColdFront(20);
-    const [hotB] = this.an.hotColdBack(8);
-    const front = this._sample(hotF.map(x => x[0]), 5);
-    const back = this._sample(hotB.map(x => x[0]), 2);
-    return [front, back];
-  }
-
-  predictCold() {
-    const [, coldF] = this.an.hotColdFront(20);
-    const [, coldB] = this.an.hotColdBack(8);
-    const front = this._sample(coldF.map(x => x[0]), 5);
-    const back = this._sample(coldB.map(x => x[0]), 2);
-    return [front, back];
-  }
-
-  predictWeighted() {
-    const front = this._weightedPick(this.an.frontFreq, 1, 35, 5);
-    const back = this._weightedPick(this.an.backFreq, 1, 12, 2);
-    return [front, back];
-  }
-
-  predictMixed() {
-    const [hotF] = this.an.hotColdFront(15);
-    const [, coldF] = this.an.hotColdFront(15);
-    const [hotB] = this.an.hotColdBack(6);
-    const [, coldB] = this.an.hotColdBack(6);
-    const front = [...this._sample(hotF.map(x => x[0]), 3), ...this._sample(coldF.map(x => x[0]), 2)].sort((a,b)=>a-b);
-    const back = [this._sample(hotB.map(x => x[0]), 1)[0], this._sample(coldB.map(x => x[0]), 1)[0]].sort((a,b)=>a-b);
-    return [front, back];
-  }
-
-  predictBalanced() {
-    const sums = this.an.frontSumStats();
-    const target = sums.recentAvg;
-    let front;
-    for (let attempt = 0; attempt < 1000; attempt++) {
-      front = this._sample(Array.from({length:35},(_,i)=>i+1), 5).sort((a,b)=>a-b);
-      const s = front.reduce((a,b)=>a+b,0);
-      const odd = front.filter(n=>n%2===1).length;
-      const big = front.filter(n=>n>18).length;
-      if (Math.abs(s - target) <= 15 && (odd===2||odd===3) && (big===2||big===3)) break;
-    }
-    const back = this._weightedPick(this.an.backFreq, 1, 12, 2);
-    return [front, back];
-  }
-
-  _sample(arr, n) {
-    const copy = [...arr];
-    const result = [];
-    for (let i = 0; i < n && copy.length > 0; i++) {
-      const idx = Math.floor(Math.random() * copy.length);
-      result.push(copy.splice(idx, 1)[0]);
-    }
-    return result.sort((a,b)=>a-b);
-  }
-
-  generate(n = 5) {
-    const strategies = [
-      ['热号优先', () => this.predictHot()],
-      ['冷号追击', () => this.predictCold()],
-      ['加权随机', () => this.predictWeighted()],
-      ['冷热混合', () => this.predictMixed()],
-      ['均衡分析', () => this.predictBalanced()],
-    ];
-    const results = [];
-    for (let i = 0; i < n; i++) {
-      const [name, fn] = strategies[i % strategies.length];
-      const [front, back] = fn();
-      results.push({ strategy: name, front, back });
-    }
-    return results;
-  }
+class DLTPredictor {
+  constructor(an){this.an=an}
+  _sample(a,n){const c=[...a],r=[];for(let i=0;i<n&&c.length>0;i++)r.push(c.splice(Math.floor(Math.random()*c.length),1)[0]);return r.sort((a,b)=>a-b)}
+  _weightedPick(freq,min,max,count){const nums=Array.from({length:max-min+1},(_,i)=>i+min),w=nums.map(n=>(freq[n]||0)+1),p=[];for(let i=0;i<count;i++){const t=w.reduce((a,b)=>a+b,0);let r=Math.random()*t,idx=0;for(let j=0;j<nums.length;j++){r-=w[j];if(r<=0){idx=j;break}}p.push(nums[idx]);nums.splice(idx,1);w.splice(idx,1)}return p.sort((a,b)=>a-b)}
+  predictHot(){const[h]=this.an.hotColdFront(20);const[hb]=this.an.hotColdBack(8);return[this._sample(h.map(x=>x[0]),5),this._sample(hb.map(x=>x[0]),2)]}
+  predictCold(){const[,c]=this.an.hotColdFront(20);const[,cb]=this.an.hotColdBack(8);return[this._sample(c.map(x=>x[0]),5),this._sample(cb.map(x=>x[0]),2)]}
+  predictWeighted(){return[this._weightedPick(this.an.frontFreq,1,35,5),this._weightedPick(this.an.backFreq,1,12,2)]}
+  predictMixed(){const[h]=this.an.hotColdFront(15);const[,c]=this.an.hotColdFront(15);const[hb]=this.an.hotColdBack(6);const[,cb]=this.an.hotColdBack(6);return[[...this._sample(h.map(x=>x[0]),3),...this._sample(c.map(x=>x[0]),2)].sort((a,b)=>a-b),[this._sample(hb.map(x=>x[0]),1)[0],this._sample(cb.map(x=>x[0]),1)[0]].sort((a,b)=>a-b)]}
+  predictBalanced(){const t=this.an.frontSumStats().recentAvg;let f;for(let a=0;a<1000;a++){f=this._sample(Array.from({length:35},(_,i)=>i+1),5).sort((x,y)=>x-y);const s=f.reduce((a,b)=>a+b,0),o=f.filter(n=>n%2===1).length,b=f.filter(n=>n>18).length;if(Math.abs(s-t)<=15&&(o===2||o===3)&&(b===2||b===3))break}return[f,this._weightedPick(this.an.backFreq,1,12,2)]}
+  generate(){return[['热号优先',()=>this.predictHot()],['冷号追击',()=>this.predictCold()],['加权随机',()=>this.predictWeighted()],['冷热混合',()=>this.predictMixed()],['均衡分析',()=>this.predictBalanced()]].map(([n,f])=>{const[front,back]=f();return{strategy:n,front,back}})}
 }
 
 // ============================================================
-// UI 渲染
+// 排列五分析器
 // ============================================================
-
-function pad2(n) { return String(n).padStart(2, '0'); }
-
-function ballHTML(nums, type, sm) {
-  const cls = type === 'front' ? 'ball-front' : 'ball-back';
-  const size = sm ? ' ball-sm' : '';
-  return nums.map(n => `<span class="ball ${cls}${size}">${pad2(n)}</span>`).join('');
+class PL5Analyzer {
+  constructor(history) {
+    this.history = history;
+    this.positions = ['万位','千位','百位','十位','个位'];
+    this.posFreq = Array.from({length:5},()=>Array(10).fill(0));
+    this.totalFreq = Array(10).fill(0);
+    for (const r of history) {
+      for (let i=0;i<5;i++) {
+        this.posFreq[i][r.nums[i]]++;
+        this.totalFreq[r.nums[i]]++;
+      }
+    }
+  }
+  posHotCold(pos,n=3){
+    const arr=Array.from({length:10},(_,i)=>[i,this.posFreq[pos][i]]).sort((a,b)=>b[1]-a[1]);
+    return[arr.slice(0,n),arr.slice(-n).reverse()];
+  }
+  posMissing(pos){
+    const m=Array(10).fill(-1);
+    for(let i=0;i<this.history.length;i++){
+      const n=this.history[i].nums[pos];
+      if(m[n]===-1)m[n]=i;
+    }
+    for(let i=0;i<10;i++)if(m[i]===-1)m[i]=this.history.length;
+    return m;
+  }
+  parityRatio(nums){let o=0;for(const n of nums)if(n%2===1)o++;return o+':'+(5-o)}
+  recentParity(n=50){const s={};for(const r of this.history.slice(0,n)){const k=this.parityRatio(r.nums);s[k]=(s[k]||0)+1}return Object.entries(s).sort((a,b)=>b[1]-a[1])}
+  recentBigSmall(n=50){const s={};for(const r of this.history.slice(0,n)){let b=0;for(const n of r.nums)if(n>=5)b++;const k=(5-b)+':'+b;s[k]=(s[k]||0)+1}return Object.entries(s).sort((a,b)=>b[1]-a[1])}
+  sumStats(){const s=this.history.map(r=>r.nums.reduce((a,b)=>a+b,0));s.sort((a,b)=>a-b);return{min:Math.min(...s),max:Math.max(...s),avg:(s.reduce((a,b)=>a+b,0)/s.length).toFixed(1),median:s[Math.floor(s.length/2)]}}
+  spanStats(){const s=this.history.map(r=>Math.max(...r.nums)-Math.min(...r.nums));return{avg:(s.reduce((a,b)=>a+b,0)/s.length).toFixed(1),max:Math.max(...s),min:Math.min(...s)}}
 }
 
-function renderOverview() {
-  const a = ANALYZER;
-  const sums = a.frontSumStats();
-  const consec = a.consecutiveStats();
+class PL5Predictor {
+  constructor(an){this.an=an}
+  predictHot(){const r=[];for(let p=0;p<5;p++){const[h]=this.an.posHotCold(p,3);r.push(h[Math.floor(Math.random()*3)][0])}return r}
+  predictCold(){const r=[];for(let p=0;p<5;p++){const[,c]=this.an.posHotCold(p,3);r.push(c[Math.floor(Math.random()*3)][0])}return r}
+  predictBalanced(){const r=[];const order=[0,1,2,3,4].sort(()=>Math.random()-.5);for(let idx=0;idx<5;idx++){const p=order[idx];if(idx<2){const[h]=this.an.posHotCold(p,3);r[p]=h[Math.floor(Math.random()*3)][0]}else if(idx<4){const m=this.an.posMissing(p);const sorted=Array.from({length:10},(_,i)=>[i,m[i]]).sort((a,b)=>b[1]-a[1]);r[p]=sorted[Math.floor(Math.random()*3)][0]}else{r[p]=Math.floor(Math.random()*10)}}return r}
+  predictWeighted(){const r=[];for(let p=0;p<5;p++){const nums=[0,1,2,3,4,5,6,7,8,9];const w=nums.map(n=>this.an.posFreq[p][n]+1);const t=w.reduce((a,b)=>a+b,0);let rand=Math.random()*t,idx=0;for(let j=0;j<10;j++){rand-=w[j];if(rand<=0){idx=j;break}}r.push(idx)}return r}
+  predictSum(){const sums=this.an.history.map(r=>r.nums.reduce((a,b)=>a+b,0));sums.sort((a,b)=>a-b);const target=sums[Math.floor(sums.length/2)];const r=[];let rem=target;for(let p=0;p<4;p++){const lo=Math.max(0,rem-(4-p)*9),hi=Math.min(9,rem);const n=Math.floor(Math.random()*(hi-lo+1))+lo;r.push(n);rem-=n}r.push(rem>=0&&rem<=9?rem:Math.floor(Math.random()*10));return r}
+  generate(){return[['热号策略',()=>this.predictHot()],['冷号策略',()=>this.predictCold()],['均衡策略',()=>this.predictBalanced()],['加权随机',()=>this.predictWeighted()],['和值策略',()=>this.predictSum()]].map(([n,f])=>({strategy:n,nums:f()}))}
+}
 
-  // Stats grid
-  document.getElementById('overviewStats').innerHTML = `
-    <div class="stat-box red"><div class="label">分析样本</div><div class="value">${a.history.length}</div></div>
-    <div class="stat-box blue"><div class="label">前区和值均值</div><div class="value">${sums.avg}</div></div>
-    <div class="stat-box green"><div class="label">最近20期均值</div><div class="value">${sums.recentAvg}</div></div>
-    <div class="stat-box gold"><div class="label">和值范围</div><div class="value">${sums.min}~${sums.max}</div></div>
-  `;
-
-  // Hot/Cold
-  const [hotF, coldF] = a.hotColdFront(10);
-  const [hotB, coldB] = a.hotColdBack(5);
-  document.getElementById('hotFront').innerHTML = hotF.map(([n,c]) => `<span class="chip hot">${pad2(n)}(${c})</span>`).join('');
-  document.getElementById('coldFront').innerHTML = coldF.map(([n,c]) => `<span class="chip cold">${pad2(n)}(${c})</span>`).join('');
-  document.getElementById('hotBack').innerHTML = hotB.map(([n,c]) => `<span class="chip hot">${pad2(n)}(${c})</span>`).join('');
-  document.getElementById('coldBack').innerHTML = coldB.map(([n,c]) => `<span class="chip cold">${pad2(n)}(${c})</span>`).join('');
-
-  // Parity & Big/Small
-  const parity = a.recentParity(30);
-  const bs = a.recentBigSmall(30);
-  const maxP = Math.max(...parity.map(x => x[1]));
-  document.getElementById('parityDist').innerHTML = parity.map(([ratio, count]) =>
-    `<div class="bar-row"><div class="bar-label">${ratio}</div><div class="bar-track"><div class="bar-fill warm" style="width:${count/maxP*100}%">${count}</div></div></div>`
-  ).join('');
-  const maxB = Math.max(...bs.map(x => x[1]));
-  document.getElementById('bigSmallDist').innerHTML = bs.map(([ratio, count]) =>
-    `<div class="bar-row"><div class="bar-label">${ratio}</div><div class="bar-track"><div class="bar-fill hot" style="width:${count/maxB*100}%">${count}</div></div></div>`
-  ).join('');
-
-  // Consecutive
-  document.getElementById('consecStats').innerHTML = `
-    <div class="stats-grid">
-      <div class="stat-box red"><div class="label">含连号期数</div><div class="value">${consec.count}</div></div>
-      <div class="stat-box blue"><div class="label">连号占比</div><div class="value">${consec.ratio}%</div></div>
+// ============================================================
+// 渲染 - 大乐透
+// ============================================================
+function renderDLT_Latest(){
+  const r=DLT_DATA[0];
+  document.getElementById('latestDraw').innerHTML=`<span>第${r.period}期 ${r.date}</span>`+
+    r.front.map(n=>`<span class="ball bf">${pad2(n)}</span>`).join('')+
+    `<span class="sep">+</span>`+
+    r.back.map(n=>`<span class="ball bb">${pad2(n)}</span>`).join('');
+}
+function renderDLT_Overview(){
+  const a=new DLTAnalyzer(DLT_DATA);
+  const s=a.frontSumStats(),c=a.consecutiveStats();
+  const[hF,cF]=a.hotColdFront(10),[hB,cB]=a.hotColdBack(5);
+  const par=a.recentParity(30),bs=a.recentBigSmall(30);
+  const maxP=Math.max(...par.map(x=>x[1])),maxB=Math.max(...bs.map(x=>x[1]));
+  document.getElementById('tab-overview').innerHTML=`
+    <div class="card"><h2>📊 基础统计</h2><div class="stats-grid">
+      <div class="stat-box red"><div class="label">分析样本</div><div class="value">${DLT_DATA.length}</div></div>
+      <div class="stat-box blue"><div class="label">和值均值</div><div class="value">${s.avg}</div></div>
+      <div class="stat-box green"><div class="label">近20期均值</div><div class="value">${s.recentAvg}</div></div>
+      <div class="stat-box gold"><div class="label">和值范围</div><div class="value">${s.min}~${s.max}</div></div>
+    </div></div>
+    <div class="card"><h2>🔥 冷热号码</h2>
+      <h3>前区热号 Top10</h3><div class="chip-row">${hF.map(([n,c])=>`<span class="chip hot">${pad2(n)}(${c})</span>`).join('')}</div>
+      <h3>前区冷号 Top10</h3><div class="chip-row">${cF.map(([n,c])=>`<span class="chip cold">${pad2(n)}(${c})</span>`).join('')}</div>
+      <h3>后区热号 Top5</h3><div class="chip-row">${hB.map(([n,c])=>`<span class="chip hot">${pad2(n)}(${c})</span>`).join('')}</div>
+      <h3>后区冷号 Top5</h3><div class="chip-row">${cB.map(([n,c])=>`<span class="chip cold">${pad2(n)}(${c})</span>`).join('')}</div>
     </div>
-  `;
-}
-
-function renderFrequency() {
-  const a = ANALYZER;
-  const maxF = Math.max(...Object.values(a.frontFreq));
-
-  // Front frequency
-  document.getElementById('frontFreq').innerHTML = Array.from({length: 35}, (_, i) => {
-    const n = i + 1;
-    const c = a.frontFreq[n];
-    const pct = c / maxF * 100;
-    const cls = c >= maxF * 0.7 ? 'hot' : (c >= maxF * 0.4 ? 'warm' : 'cold');
-    return `<div class="bar-row"><div class="bar-label">${pad2(n)}</div><div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%">${c}</div></div><div class="bar-count">${c}次</div></div>`;
-  }).join('');
-
-  // Back frequency
-  const maxFB = Math.max(...Object.values(a.backFreq));
-  document.getElementById('backFreq').innerHTML = Array.from({length: 12}, (_, i) => {
-    const n = i + 1;
-    const c = a.backFreq[n];
-    const pct = c / maxFB * 100;
-    const cls = c >= maxFB * 0.7 ? 'hot' : (c >= maxFB * 0.4 ? 'warm' : 'cold');
-    return `<div class="bar-row"><div class="bar-label">${pad2(n)}</div><div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%">${c}</div></div><div class="bar-count">${c}次</div></div>`;
-  }).join('');
-
-  // Front missing
-  const missF = a.missingFront();
-  const sortedF = Object.entries(missF).map(([n, m]) => [parseInt(n), m]).sort((a, b) => b[1] - a[1]);
-  const maxM = Math.max(...sortedF.map(x => x[1]));
-  document.getElementById('frontMiss').innerHTML = sortedF.map(([n, m]) => {
-    const cls = m >= maxM * 0.6 ? 'hot' : (m >= maxM * 0.3 ? 'warm' : 'cold');
-    return `<div class="bar-row"><div class="bar-label">${pad2(n)}</div><div class="bar-track"><div class="bar-fill ${cls}" style="width:${m/Math.max(1,maxM)*100}%">${m}</div></div><div class="bar-count">${m}期</div></div>`;
-  }).join('');
-
-  // Back missing
-  const missB = a.missingBack();
-  const sortedB = Object.entries(missB).map(([n, m]) => [parseInt(n), m]).sort((a, b) => b[1] - a[1]);
-  const maxMB = Math.max(...sortedB.map(x => x[1]));
-  document.getElementById('backMiss').innerHTML = sortedB.map(([n, m]) => {
-    const cls = m >= maxMB * 0.6 ? 'hot' : (m >= maxMB * 0.3 ? 'warm' : 'cold');
-    return `<div class="bar-row"><div class="bar-label">${pad2(n)}</div><div class="bar-track"><div class="bar-fill ${cls}" style="width:${m/Math.max(1,maxMB)*100}%">${m}</div></div><div class="bar-count">${m}期</div></div>`;
-  }).join('');
-}
-
-function generatePredictions() {
-  const predictor = new DaletouPredictor(ANALYZER);
-  const preds = predictor.generate(5);
-  document.getElementById('predictions').innerHTML = preds.map((p, i) => `
-    <div class="pred-card">
-      <div class="pred-header">
-        <span class="group-num">第${i+1}组</span>
-        <span class="strategy">${p.strategy}</span>
-      </div>
-      <div class="pred-balls">
-        ${ballHTML(p.front, 'front')}
-        <span style="color:#bbb;font-size:18px;margin:0 4px">+</span>
-        ${ballHTML(p.back, 'back')}
-      </div>
+    <div class="card"><h2>📈 奇偶与大小（近30期）</h2>
+      <h3>奇偶比</h3>${par.map(([r,c])=>`<div class="bar-row"><div class="bar-label">${r}</div><div class="bar-track"><div class="bar-fill warm" style="width:${c/maxP*100}%">${c}</div></div></div>`).join('')}
+      <h3>大小比（18为界）</h3>${bs.map(([r,c])=>`<div class="bar-row"><div class="bar-label">${r}</div><div class="bar-track"><div class="bar-fill hot" style="width:${c/maxB*100}%">${c}</div></div></div>`).join('')}
     </div>
-  `).join('');
+    <div class="card"><h2>🔗 连号统计</h2><div class="stats-grid">
+      <div class="stat-box red"><div class="label">含连号期数</div><div class="value">${c.count}</div></div>
+      <div class="stat-box blue"><div class="label">连号占比</div><div class="value">${c.ratio}%</div></div>
+    </div></div>`;
+}
+function renderDLT_Frequency(){
+  const a=new DLTAnalyzer(DLT_DATA);
+  const maxF=Math.max(...Object.values(a.frontFreq)),maxB=Math.max(...Object.values(a.backFreq));
+  const mF=a.missingFront(),mB=a.missingBack();
+  const sF=Object.entries(mF).map(([n,m])=>[parseInt(n),m]).sort((a,b)=>b[1]-a[1]);
+  const sB=Object.entries(mB).map(([n,m])=>[parseInt(n),m]).sort((a,b)=>b[1]-a[1]);
+  const maxMF=Math.max(...sF.map(x=>x[1])),maxMB=Math.max(...sB.map(x=>x[1]));
+  const fbar=(n,c,max)=>{const p=c/max*100;const cls=p>=70?'hot':p>=40?'warm':'cold';return`<div class="bar-row"><div class="bar-label">${pad2(n)}</div><div class="bar-track"><div class="bar-fill ${cls}" style="width:${p}%">${c}</div></div><div class="bar-count">${c}次</div></div>`};
+  const mbar=(n,m,max)=>{const p=m/Math.max(1,max)*100;const cls=p>=60?'hot':p>=30?'warm':'cold';return`<div class="bar-row"><div class="bar-label">${pad2(n)}</div><div class="bar-track"><div class="bar-fill ${cls}" style="width:${p}%">${m}</div></div><div class="bar-count">${m}期</div></div>`};
+  document.getElementById('tab-frequency').innerHTML=`
+    <div class="card"><h2>前区频率（01-35）</h2>${Array.from({length:35},(_,i)=>fbar(i+1,a.frontFreq[i+1],maxF)).join('')}</div>
+    <div class="card"><h2>后区频率（01-12）</h2>${Array.from({length:12},(_,i)=>fbar(i+1,a.backFreq[i+1],maxB)).join('')}</div>
+    <div class="card"><h2>前区遗漏值</h2>${sF.map(([n,m])=>mbar(n,m,maxMF)).join('')}</div>
+    <div class="card"><h2>后区遗漏值</h2>${sB.map(([n,m])=>mbar(n,m,maxMB)).join('')}</div>`;
+}
+function renderDLT_Predict(){
+  const p=new DLTPredictor(new DLTAnalyzer(DLT_DATA));
+  const preds=p.generate();
+  document.getElementById('tab-predict').innerHTML=`
+    <div class="disclaimer">⚠️ 彩票开奖是完全随机的独立事件，以下号码仅供娱乐参考，请理性购彩。</div>
+    ${preds.map((p,i)=>`<div class="pred-card"><div class="pred-header"><span class="group-num">第${i+1}组</span><span class="strategy dlt">${p.strategy}</span></div><div class="pred-balls">${p.front.map(n=>`<span class="ball ball-front">${pad2(n)}</span>`).join('')}<span style="color:#bbb;font-size:18px;margin:0 4px">+</span>${p.back.map(n=>`<span class="ball ball-back">${pad2(n)}</span>`).join('')}</div></div>`).join('')}
+    <button class="refresh-btn" onclick="renderDLT_Predict()">🔄 重新生成预测</button>`;
+}
+function renderDLT_History(){
+  document.getElementById('tab-history').innerHTML=`<div class="card" style="padding:8px"><h2 style="padding:8px 8px 8px 12px">📜 历史开奖（最近50期）</h2><div style="overflow-x:auto"><table class="hist-table"><thead><tr><th>期号</th><th>前区</th><th>后区</th><th>和值</th></tr></thead><tbody>${DLT_DATA.slice(0,50).map(r=>{const s=r.front.reduce((a,b)=>a+b,0);return`<tr><td>${r.period}</td><td>${r.front.map(n=>`<span class="ball ball-front ball-sm">${pad2(n)}</span>`).join(' ')}</td><td>${r.back.map(n=>`<span class="ball ball-back ball-sm">${pad2(n)}</span>`).join(' ')}</td><td>${s}</td></tr>`}).join('')}</tbody></table></div></div>`;
 }
 
-function renderHistory() {
-  const rows = HISTORY.slice(0, 50).map(r => {
-    const sum = r.front.reduce((a, b) => a + b, 0);
-    return `<tr>
-      <td>${r.period}</td>
-      <td>${ballHTML(r.front, 'front', true)}</td>
-      <td>${ballHTML(r.back, 'back', true)}</td>
-      <td>${sum}</td>
-    </tr>`;
-  }).join('');
-  document.getElementById('historyTable').innerHTML = rows;
+// ============================================================
+// 渲染 - 排列五
+// ============================================================
+function renderPL5_Latest(){
+  const r=PL5_DATA[0];
+  document.getElementById('latestDraw').innerHTML=`<span>第${r.period}期 ${r.date}</span>`+r.nums.map(n=>`<span class="ball bb">${n}</span>`).join('');
+}
+function renderPL5_Overview(){
+  const a=new PL5Analyzer(PL5_DATA);
+  const s=a.sumStats(),sp=a.spanStats();
+  const par=a.recentParity(50),bs=a.recentBigSmall(50);
+  const maxP=Math.max(...par.map(x=>x[1])),maxB=Math.max(...bs.map(x=>x[1]));
+  let html=`<div class="card pl5"><h2>📊 基础统计</h2><div class="stats-grid">
+    <div class="stat-box purple"><div class="label">分析样本</div><div class="value">${PL5_DATA.length}</div></div>
+    <div class="stat-box blue"><div class="label">和值均值</div><div class="value">${s.avg}</div></div>
+    <div class="stat-box green"><div class="label">和值中位数</div><div class="value">${s.median}</div></div>
+    <div class="stat-box gold"><div class="label">和值范围</div><div class="value">${s.min}~${s.max}</div></div>
+  </div></div>`;
+  // 各位置冷热号
+  html+=`<div class="card pl5"><h2>🔥 各位置冷热号</h2>`;
+  for(let p=0;p<5;p++){
+    const[h,c]=a.posHotCold(p,3);
+    html+=`<div class="pos-section"><div class="pos-title">${a.positions[p]}</div>
+      <div class="chip-row"><span style="font-size:11px;color:#e74c3c;font-weight:700">热:</span>${h.map(([n,cnt])=>`<span class="chip hot">${n}(${cnt})</span>`).join('')}<span style="font-size:11px;color:#3498db;font-weight:700;margin-left:6px">冷:</span>${c.map(([n,cnt])=>`<span class="chip cold">${n}(${cnt})</span>`).join('')}</div></div>`;
+  }
+  html+=`</div>`;
+  // 奇偶大小
+  html+=`<div class="card pl5"><h2>📈 奇偶与大小（近50期）</h2>
+    <h3>奇偶比</h3>${par.map(([r,c])=>`<div class="bar-row"><div class="bar-label">${r}</div><div class="bar-track"><div class="bar-fill purple" style="width:${c/maxP*100}%">${c}</div></div></div>`).join('')}
+    <h3>大小比（0-4小 5-9大）</h3>${bs.map(([r,c])=>`<div class="bar-row"><div class="bar-label">${r}</div><div class="bar-track"><div class="bar-fill hot" style="width:${c/maxB*100}%">${c}</div></div></div>`).join('')}
+  </div>`;
+  html+=`<div class="card pl5"><h2>📐 跨度分析</h2><div class="stats-grid">
+    <div class="stat-box purple"><div class="label">平均跨度</div><div class="value">${sp.avg}</div></div>
+    <div class="stat-box gold"><div class="label">跨度范围</div><div class="value">${sp.min}~${sp.max}</div></div>
+  </div></div>`;
+  document.getElementById('tab-overview').innerHTML=html;
+}
+function renderPL5_Frequency(){
+  const a=new PL5Analyzer(PL5_DATA);
+  let html='';
+  // 各位置频率
+  for(let p=0;p<5;p++){
+    const max=Math.max(...a.posFreq[p]);
+    html+=`<div class="card pl5"><h2>${a.positions[p]}频率（0-9）</h2>`;
+    html+=Array.from({length:10},(_,n)=>{
+      const c=a.posFreq[p][n],pct=c/max*100;
+      const cls=pct>=70?'hot':pct>=40?'warm':'cold';
+      return`<div class="bar-row"><div class="bar-label">${n}</div><div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%">${c}</div></div><div class="bar-count">${c}次</div></div>`;
+    }).join('');
+    html+='</div>';
+  }
+  // 各位置遗漏值
+  html+=`<div class="card pl5"><h2>各位置遗漏值</h2>`;
+  for(let p=0;p<5;p++){
+    const m=a.posMissing(p);
+    const sorted=Array.from({length:10},(_,n)=>[n,m[n]]).sort((a,b)=>b[1]-a[1]);
+    const maxM=Math.max(...sorted.map(x=>x[1]));
+    html+=`<div class="pos-section"><div class="pos-title">${a.positions[p]}</div>`;
+    html+=sorted.map(([n,mi])=>{const pct=mi/Math.max(1,maxM)*100;const cls=pct>=60?'hot':pct>=30?'warm':'cold';return`<div class="bar-row"><div class="bar-label">${n}</div><div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%">${mi}</div></div><div class="bar-count">${mi}期</div></div>`}).join('');
+    html+='</div>';
+  }
+  html+='</div>';
+  document.getElementById('tab-frequency').innerHTML=html;
+}
+function renderPL5_Predict(){
+  const p=new PL5Predictor(new PL5Analyzer(PL5_DATA));
+  const preds=p.generate();
+  document.getElementById('tab-predict').innerHTML=`
+    <div class="disclaimer">⚠️ 彩票开奖是完全随机的独立事件，以下号码仅供娱乐参考，请理性购彩。</div>
+    ${preds.map((p,i)=>{const sum=p.nums.reduce((a,b)=>a+b,0);return`<div class="pred-card"><div class="pred-header"><span class="group-num">第${i+1}组</span><span class="strategy">${p.strategy}</span></div><div class="pred-balls">${p.nums.map(n=>`<span class="ball ball-pl5">${n}</span>`).join('')}</div><div class="pred-sum">和值: ${sum}</div></div>`}).join('')}
+    <button class="refresh-btn pl5" onclick="renderPL5_Predict()">🔄 重新生成预测</button>`;
+}
+function renderPL5_History(){
+  document.getElementById('tab-history').innerHTML=`<div class="card pl5" style="padding:8px"><h2 style="padding:8px 8px 8px 12px">📜 历史开奖（最近50期）</h2><div style="overflow-x:auto"><table class="hist-table pl5"><thead><tr><th>期号</th><th>万</th><th>千</th><th>百</th><th>十</th><th>个</th><th>和值</th></tr></thead><tbody>${PL5_DATA.slice(0,50).map(r=>{const s=r.nums.reduce((a,b)=>a+b,0);return`<tr><td>${r.period}</td>${r.nums.map(n=>`<td><span class="ball ball-pl5 ball-sm">${n}</span></td>`).join('')}<td>${s}</td></tr>`}).join('')}</tbody></table></div></div>`;
 }
 
-function renderLatestDraw() {
-  if (!HISTORY.length) return;
-  const r = HISTORY[0];
-  document.getElementById('latestDraw').innerHTML =
-    `<span>第${r.period}期 (${r.date})</span>` +
-    ballHTML(r.front, 'front') +
-    `<span style="color:#ddd">+</span>` +
-    ballHTML(r.back, 'back');
+// ============================================================
+// 模式切换
+// ============================================================
+function switchMode(mode){
+  MODE=mode;
+  const header=document.getElementById('appHeader');
+  const title=document.getElementById('appTitle');
+  const btns=document.querySelectorAll('.mode-btn');
+  btns.forEach((b,i)=>b.classList.toggle('active',(mode==='dlt'&&i===0)||(mode==='pl5'&&i===1)));
+  if(mode==='dlt'){
+    header.classList.remove('pl5');
+    title.textContent='🔴 大乐透分析器';
+    document.querySelectorAll('.tab.active').forEach(t=>t.style.color='');
+    renderDLT_Latest();
+    renderDLT_Overview();
+    renderDLT_Frequency();
+    renderDLT_Predict();
+    renderDLT_History();
+  }else{
+    header.classList.add('pl5');
+    title.textContent='🟣 排列五分析器';
+    renderPL5_Latest();
+    renderPL5_Overview();
+    renderPL5_Frequency();
+    renderPL5_Predict();
+    renderPL5_History();
+  }
 }
 
 // ---- Tab switching ----
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
     tab.classList.add('active');
-    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
   });
 });
 
 // ---- Init ----
-async function init() {
-  try {
-    const resp = await fetch('data.json');
-    HISTORY = await resp.json();
-    ANALYZER = new DaletouAnalyzer(HISTORY);
-    renderLatestDraw();
-    renderOverview();
-    renderFrequency();
-    generatePredictions();
-    renderHistory();
-  } catch (e) {
-    document.querySelector('.content').innerHTML = '<div class="loading"><p>数据加载失败，请刷新重试</p></div>';
+async function init(){
+  try{
+    const[dlData,plData]=await Promise.all([fetchJSON('data.json'),fetchJSON('pl5_data.json')]);
+    DLT_DATA=dlData;
+    PL5_DATA=plData;
+    renderDLT_Latest();
+    renderDLT_Overview();
+    renderDLT_Frequency();
+    renderDLT_Predict();
+    renderDLT_History();
+  }catch(e){
+    document.getElementById('appContent').innerHTML='<div style="text-align:center;padding:40px;color:#7f8c8d">数据加载失败，请刷新重试</div>';
     console.error(e);
   }
 }
-
-// ---- Start ----
 init();
 </script>
 </body>
